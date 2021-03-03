@@ -16,19 +16,9 @@ class Manager extends Employee {
     }
 }
 
-class Engineer extends Employee {
-    constructor(name, position, id, email, gitHub) {
-        super(name, 'Engineer', id, email)
-        this.gitHub = gitHub;
-    }
-}
 
-class Intern extends Employee {
-    constructor(name, position, id, email, school) {
-        super(name, 'Intern', id, email);
-        this.school = school;
-    }
-}
+
+
 
 const questions = {
     "genQuest": [{
@@ -43,7 +33,16 @@ const questions = {
     },{
         type: "input",
         name: "idNum",
-        message: "What is the id # for the employee?"
+        message: "What is the id # for the employee?",
+        validate: (answer) => {
+            if (answer !== ""){
+                return 'Please enter at least 1 number.';
+            } if (idArr.includes(answer)) {
+                return "Please choose a unique ID number.";
+            }
+            idArr.push(answer);
+            return true;
+        }
     },{
         type: "input",
         name: "email",

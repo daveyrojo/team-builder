@@ -2,11 +2,21 @@
 //id, email office #
 //engineer: name, id, email github username
 //intern name, id email, school
+const Employee = require('./employee.js');
 
 class Manager extends Employee {
-    constructor(id, officeNum, email) {
-        super(name, 'Manager', id)
+    constructor(name, email, id, officeNum) {
+        super(name, email, id)
         this.officeNum = officeNum;
-        this.email = email;
+    }
+
+    getRole() {
+        return 'Manager';
+    }
+
+    getOfficeNum() {
+        return this.officeNum
     }
 }
+
+module.exports = Manager;

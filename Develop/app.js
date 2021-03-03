@@ -15,18 +15,77 @@ const idArr = [];
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 function userPrompt() {
+    const questions = [{
+            type: "input",
+            name: "empName",
+            message: "What is the employee's name?",
+            validate: (answer) => {
+                if (answer !== "") {
+                    return true;
+                } return "Please enter atleast one character."
+            }
+        }, {
+            type: "input",
+            name: "idNum",
+            message: "What is the id # for the employee?",
+            validate: (answer) => {
+                if (answer !== "") {
+                    return 'Please enter at least 1 number.';
+                } if (idArr.includes(answer)) {
+                    return "Please choose a unique ID number.";
+                }
+                idArr.push(answer);
+                return true;
+            }
+        }, {
+            type: "input",
+            name: "email",
+            message: "What is the employee's email address?",
+            validate: (answer) => {
+                if (answer.indexOf('@') === -1 || answer.indexOf('.') === -1) {
+                    return 'Please input a valid email address.'
+                }
+            }
+        }, {
+            type: "list",
+            name: "empType",
+            message: "What is the title of the employee?",
+            choices: ["Manager", "Engineer", "Intern"]
+        }];            
+
+        if (emp)
     function createManager() {
         inquirer.prompt
+
+        const managerQuestion = [{
+            type: "input",
+            name: "officeNum",
+            message: 'What is the managers office number?',
+        }];
     }
 
     function createEngineer() {
+
+        const enginnerQuestion = [{
+            type: "input",
+            name: "gitHub",
+            message: "What is the engineer's GitHub username?"
+        }];
 
     }
 
     function createIntern() {
 
+        const internQuestion = [{
+            type: "input",
+            name: "school",
+            message: "What is the intern's school name?"
+        }];
     }
-}
+};
+
+userPrompt();
+
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
 // generate and return a block of HTML including templated divs for each employee!
@@ -37,6 +96,13 @@ function userPrompt() {
 // Hint: you may need to check if the `output` folder exists and create it if it
 // does not.
 
+function generateHTML() {
+    fs.writeFile(outputPath, render(memebers), 'UTF-8', (err) => {
+        console.log('Write to file');
+        if (err) throw err;
+    });
+    console.log(members);
+}
 // HINT: each employee type (manager, engineer, or intern) has slightly different
 // information; write your code to ask different questions via inquirer depending on
 // employee type.
