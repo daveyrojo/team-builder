@@ -71,3 +71,35 @@ const questions = {
     }]
 };
 
+
+
+
+
+
+
+//             }
+
+//         } else if (questions.empType === 'Engineer') {
+
+//             function createEngineer() {
+
+//                 const enginnerQuestion = [{
+//                     type: "input",
+//                     name: "gitHub",
+//                     message: "What is the engineer's GitHub username?"
+//                 }]; 
+
+//             }
+
+//         } else {
+//             function createIntern() {
+
+
+//                 const internQuestion = [{
+//                     type: "input",
+//                     name: "school",
+//                     message: "What is the intern's school name?"
+//                 }];
+//             }
+//         }   
+// };

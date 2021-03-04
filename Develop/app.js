@@ -15,7 +15,7 @@ const idArr = [];
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 function userPrompt() {
-    const questions = [{
+    return inquirer.prompt([{
             type: "input",
             name: "empName",
             message: "What is the employee's name?",
@@ -29,8 +29,8 @@ function userPrompt() {
             name: "idNum",
             message: "What is the id # for the employee?",
             validate: (answer) => {
-                if (answer !== "") {
-                    return 'Please enter at least 1 number.';
+                if (answer === "") {
+                    return 'Please enter at least 1 character.';
                 } if (idArr.includes(answer)) {
                     return "Please choose a unique ID number.";
                 }
@@ -51,38 +51,77 @@ function userPrompt() {
             name: "empType",
             message: "What is the title of the employee?",
             choices: ["Manager", "Engineer", "Intern"]
-        }];            
+        }])
+         .then(function (response) {
+             if (response.empType === 'Manager') {
+                     inquirer.prompt([{
+                         type: "input",
+                         name: "officeNum",
+                         message: 'What is the managers office number?',
+                     }]) .then(function(managerObj) {
+                        const newManager = new Manager(
+                            response.empName,
+                            response.email,
+                            response.idNum,
+                            managerObj.officeNum
+                            );
+                        
+                        members.push(newManager);
 
-        if (emp)
-    function createManager() {
-        inquirer.prompt
+                        addUser();
+                     })
+            } else if (response.empType === 'Engineer') {
+               inquirer.prompt([{
+                    type: "input",
+                    name: "gitHub",
+                    message: "What is the engineer's GitHub username?"
+                }]) .then (function(engineerObj) {
+                    const newEngineer = new Engineer(
+                        response.empName,
+                        response.email,
+                        response.idNum,
+                        engineerObj.gitHub
+                    );
 
-        const managerQuestion = [{
-            type: "input",
-            name: "officeNum",
-            message: 'What is the managers office number?',
-        }];
-    }
+                    members.push(newEngineer);
 
-    function createEngineer() {
+                    addUser();
+                }); 
+            } else {
+                inquirer.prompt([{
+                    type: "input",
+                    name: "school",
+                    message: "What is the intern's school name?"
+                }]) .then(function(internObj) {
+                    const newIntern = new Intern(
+                        response.empName,
+                        response.email,
+                        response.idNum,
+                        interObj.school
+                    );
 
-        const enginnerQuestion = [{
-            type: "input",
-            name: "gitHub",
-            message: "What is the engineer's GitHub username?"
-        }];
+                    members.push(newInter);
 
-    }
-
-    function createIntern() {
-
-        const internQuestion = [{
-            type: "input",
-            name: "school",
-            message: "What is the intern's school name?"
-        }];
-    }
-};
+                    addUser();
+                })
+            
+                
+            }
+        }   
+    ) 
+        function addUser() {
+            inquirer.prompt([
+                {
+                    type: 'confirm',
+                    name: 'continue',
+                    message: 'Would you like to add another member to your team?'   
+                }
+            ])
+            .then(function(confirmRes) {
+                confirmRes.continue ? userPrompt() : generateHTML();
+            });
+        }
+    };          
 
 userPrompt();
 
@@ -97,12 +136,13 @@ userPrompt();
 // does not.
 
 function generateHTML() {
-    fs.writeFile(outputPath, render(memebers), 'UTF-8', (err) => {
+    fs.writeFile(outputPath, render(members), 'UTF-8', (err) => {
         console.log('Write to file');
         if (err) throw err;
     });
     console.log(members);
 }
+
 // HINT: each employee type (manager, engineer, or intern) has slightly different
 // information; write your code to ask different questions via inquirer depending on
 // employee type.
