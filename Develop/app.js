@@ -12,6 +12,7 @@ const render = require("./lib/htmlRenderer");
 
 const members = [];
 const idArr = [];
+const officeArr = [];
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 function userPrompt() {
@@ -44,6 +45,8 @@ function userPrompt() {
             validate: (answer) => {
                 if (answer.indexOf('@') === -1 || answer.indexOf('.') === -1) {
                     return 'Please input a valid email address.'
+                } else {
+                    return true;
                 }
             }
         }, {
@@ -58,6 +61,14 @@ function userPrompt() {
                          type: "input",
                          name: "officeNum",
                          message: 'What is the managers office number?',
+                         validate: (answer) => {
+                             if (officeArr.includes(answer)) {
+                                 return 'Office already taken.'
+                             } else {
+                                 officeArr.push(answer);
+                                 return true;
+                             }
+                         }
                      }]) .then(function(managerObj) {
                         const newManager = new Manager(
                             response.empName,
@@ -97,10 +108,10 @@ function userPrompt() {
                         response.empName,
                         response.email,
                         response.idNum,
-                        interObj.school
+                        internObj.school
                     );
 
-                    members.push(newInter);
+                    members.push(newIntern);
 
                     addUser();
                 })
